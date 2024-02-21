@@ -1,80 +1,73 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-
-public class Currencyconverter {
-
-    public static void converter() {
-
-        JFrame f = new JFrame("CONVERTER");
-        JLabel l1, l2;
-
-        JTextField t1, t2;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 
-        JButton b1, b2, b3;
+public class tictactoe{
+    private JFrame frame;
+    private JPanel titlePanel, buttonPanel;
+    private JLabel textfield;
+    private JButton[] buttons;
 
-        l1 = new JLabel("Rupees:");
-        l1.setBounds(20, 40, 60, 30);
-        l2 = new JLabel("Dollars:");
-        l2.setBounds(170, 40, 60, 30);
-        t1 = new JTextField("0");
-        t1.setBounds(80, 40, 50, 30);
-        t2 = new JTextField("0");
-        t2.setBounds(240, 40, 50, 30);
+    private char playerToken = 'X';
 
-        b1 = new JButton("INR");
-        b1.setBounds(50, 80, 60, 15);
-        b2 = new JButton("USD");
-        b2.setBounds(190, 80, 60, 15);
-        b3 = new JButton("close");
-        b3.setBounds(150, 150, 60, 30);
+    public tictactoe() {
 
-        b1.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                double d = Double.parseDouble(t1.getText());
+        frame = new JFrame("Tic Tac Toe");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(400, 600);
 
-                double d1 = (d / 83.01);
-                String str1 = String.valueOf(d1);
-                t2.setText(str1);
-            }
-        });
-        b2.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                double d2 = Double.parseDouble(t2.getText());
-                double d3 = (d2 * 83.01);
+        textfield = new JLabel("Player X's turn", SwingConstants.CENTER);
 
-                String str2 = String.valueOf(d3);
-                t1.setText(str2);
-            }
-        });
+        titlePanel = new JPanel();
+        titlePanel.add(textfield);
 
-        b3.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                f.dispose();
-            }
-        });
+        buttonPanel = new JPanel();
+        buttonPanel.setLayout(new GridLayout(3, 3));
 
-        f.addWindowListener(new WindowAdapter() {
-            public void windowClosing(WindowEvent e) {
-                System.exit(0);
-            }
-        });
+        buttons = new JButton[9];
+        for(int i=0; i<9; i++) {
+            buttons[i] = new JButton();
+            buttonPanel.add(buttons[i]);
+            buttons[i].setFont(new Font("Arial", Font.BOLD, 120));
+            buttons[i].setFocusable(false);
+            buttons[i].addActionListener(new ButtonClickListener());
+        }
 
-        f.add(l1);
-        f.add(t1);
-        f.add(l2);
-        f.add(t2);
-        f.add(b1);
-        f.add(b2);
-        f.add(b3);
+        frame.add(titlePanel, BorderLayout.NORTH);
+        frame.add(buttonPanel);
 
-        f.setLayout(null);
-        f.setSize(400, 300);
-        f.setVisible(true);
+        frame.setVisible(true);
     }
 
-    public static void main(String args[]) {
-        converter();
+    private class ButtonClickListener implements ActionListener {
+
+        public void actionPerformed(ActionEvent e) {
+
+            for(int i=0; i<9;i++) {
+                if(e.getSource() == buttons[i]) {
+                    if(buttons[i].getText().equals("")) {
+                        buttons[i].setText(String.valueOf(playerToken));
+                        if(playerToken == 'X')
+                            playerToken = 'O';
+                        else
+                            playerToken = 'X';
+                        textfield.setText("Player " + playerToken + "'s turn");
+
+                        check();
+                    }
+                }
+            }
+        }
     }
+
+    public void check() {
+
+    }
+
+    public static void main(String[] args) {
+        new tictactoe();
+    }
+
 }
